@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { loginAction } from "../marketplace/actions";
 
@@ -27,6 +27,7 @@ function LoginButton() {
 
 export default function LoginForm({ nextPath }) {
   const [state, formAction] = useActionState(loginAction, initialState);
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <main className="min-h-screen w-full overflow-x-auto bg-[#001529]">
@@ -56,9 +57,14 @@ export default function LoginForm({ nextPath }) {
           {/* CARD */}
           <form
             action={formAction}
+            noValidate
             className="box-border flex min-h-[517px] w-[498px] flex-col items-center rounded-[20px] bg-[#F0F2F8] px-[32px] py-[32px]"
           >
-            <input type="hidden" name="next" value={nextPath} />
+            <input
+              type="hidden"
+              name="next"
+              value={nextPath || "/marketplace"}
+            />
 
             {/* TITLE */}
             <h1 className="mb-[8px] whitespace-nowrap text-center text-[25px] font-semibold leading-[38px] text-[#FE7F2D]">
@@ -85,7 +91,6 @@ export default function LoginForm({ nextPath }) {
                 id="email"
                 type="text"
                 name="email"
-                required
                 placeholder="Username or email address"
                 aria-describedby="login-email-error"
                 className="h-[53px] w-[434px] rounded-[10px] border border-[#2176B5] bg-[#F0F2F8] px-[16px] text-[13px] font-normal leading-[20px] text-[#08497A] outline-none placeholder:text-[#ABAFB3] focus:border-[#2176B5] focus:outline-none focus:ring-0"
@@ -113,49 +118,81 @@ export default function LoginForm({ nextPath }) {
               <div className="flex h-[53px] w-[434px] items-center justify-between rounded-[10px] border border-[#2176B5] bg-[#F0F2F8] px-[16px]">
                 <input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
-                  required
                   placeholder="Password"
                   aria-describedby="login-password-error"
                   className="h-[20px] flex-1 border-0 bg-transparent p-0 text-[13px] font-normal leading-[20px] text-[#08497A] outline-none placeholder:text-[#ABAFB3] focus:border-0 focus:outline-none focus:ring-0"
                 />
 
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="ml-[10px] shrink-0"
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((current) => !current)}
+                  aria-label={
+                    showPassword
+                      ? "Sembunyikan password"
+                      : "Tampilkan password"
+                  }
+                  className="ml-[10px] flex h-[24px] w-[24px] shrink-0 cursor-pointer items-center justify-center border-0 bg-transparent p-0"
                 >
-                  <path
-                    d="M3.333 3.333L16.667 16.667"
-                    stroke="#546779"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M8.233 8.233A2.5 2.5 0 0 0 11.767 11.767"
-                    stroke="#546779"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M6.117 6.117C3.892 7.225 2.5 10 2.5 10C2.5 10 5 15 10 15C11.375 15 12.558 14.625 13.55 14.067"
-                    stroke="#546779"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M9.167 5.058C9.442 5.017 9.717 5 10 5C15 5 17.5 10 17.5 10C17.5 10 16.875 11.25 15.733 12.45"
-                    stroke="#546779"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                  {showPassword ? (
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2.5 10C2.5 10 5 5 10 5C15 5 17.5 10 17.5 10C17.5 10 15 15 10 15C5 15 2.5 10 2.5 10Z"
+                        stroke="#546779"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M10 12.5A2.5 2.5 0 1 0 10 7.5A2.5 2.5 0 0 0 10 12.5Z"
+                        stroke="#546779"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M3.333 3.333L16.667 16.667"
+                        stroke="#546779"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      />
+                      <path
+                        d="M8.233 8.233A2.5 2.5 0 0 0 11.767 11.767"
+                        stroke="#546779"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      />
+                      <path
+                        d="M6.117 6.117C3.892 7.225 2.5 10 2.5 10C2.5 10 5 15 10 15C11.375 15 12.558 14.625 13.55 14.067"
+                        stroke="#546779"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M9.167 5.058C9.442 5.017 9.717 5 10 5C15 5 17.5 10 17.5 10C17.5 10 16.875 11.25 15.733 12.45"
+                        stroke="#546779"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  )}
+                </button>
               </div>
 
               {state.errors?.password?.[0] && (
@@ -191,10 +228,7 @@ export default function LoginForm({ nextPath }) {
 
             <p className="m-0 h-[24px] shrink-0 text-center text-[16px] font-normal leading-[24px] text-black">
               No Account?{" "}
-              <Link
-                href="/signup"
-                className="text-[#2176B5] no-underline"
-              >
+              <Link href="/signup" className="text-[#2176B5] no-underline">
                 Sign Up
               </Link>
             </p>
