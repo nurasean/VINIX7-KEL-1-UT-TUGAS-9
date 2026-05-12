@@ -54,6 +54,9 @@ async function saveInteractionSafely(message) {
   }
 }
 
+/**
+ * Zod Validation untuk login.
+ */
 const loginSchema = z.object({
   email: z
     .string()
@@ -67,9 +70,7 @@ const loginSchema = z.object({
   next: z.string().optional(),
 });
 
-/**
- * Zod Validation untuk checkout.
- */
+
 const checkoutSchema = z.object({
   product: z.string().trim().min(1, "Produk checkout tidak valid."),
   payment: z.string().trim().min(1, "Metode pembayaran wajib dipilih."),
